@@ -1,0 +1,15 @@
+@import url("https://use.fontawesome.com/releases/v5.3.1/css/all.css");
+#timer {
+  height: 150px; }
+
+.App {
+  width: 500px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+  background-color: green; }
+
+.control-grp {
+  height: 175px;
+  padding: 10px;
+  background: #efefef; }
