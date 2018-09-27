@@ -8,13 +8,22 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
+    function timer(mins) {
+        const time = new Date();
+        time.setHours(0);
+        time.setMinutes(mins);
+        time.setSeconds(0);
+        let timer = time.toTimeString().split(' ');
+        timer = timer[0].split(':');
+
+        return `${timer[1]}:${timer[2]}`;
+    }
+    
     switch(action.type) {
         case START_STOP_TIMER:
-            const time = new Date(25, 0);
-            console.log(time);
             return{
                 ...state,
-                timer: 'hello'
+                timer: timer(state.session)
             };
         default:
             return state;
