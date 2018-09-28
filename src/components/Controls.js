@@ -5,14 +5,39 @@ import { Button, ButtonGroup, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import { startStopTimer } from '../actions/clockActions';
 
+let countdown;
+
 class Controls extends Component {
     constructor(props) {
         super(props);
-        this.handleStartStop = this.handleStartStop.bind(this);
+        this.timer = this.timer.bind(this);
+        this.handleTimer = this.handleTimer.bind(this);
     }
 
-    handleStartStop() {
-        setInterval(this.props.startStopTimer, 1000);
+    timer() {
+        // get the current time
+        let currentTime = this.props.timer.split(':');
+
+        // set a new Date object
+        let newTime = new Date();
+        newTime.setMinutes(currentTime[0], currentTime[1]);
+
+        // create another Date object with subtracted value
+        let nextTime = new Date(newTime.valueOf() - 1000);
+        nextTime = nextTime.toTimeString().split(' ');
+        nextTime = nextTime[0].split(':');
+        nextTime = `${nextTime[1]}:${nextTime[2]}`;
+
+        // if value hits '0' stop interval...
+        if (nextTime === '00:00') {
+            clearInterval(countdown);
+        }
+        
+        this.props.startStopTimer(nextTime);
+    }
+
+    handleTimer() {
+        countdown = setInterval(this.timer, 1000);
     }
 
     render() {
@@ -31,7 +56,7 @@ class Controls extends Component {
                 <Col xs="4">
                     <div className="control-grp">
                         <ButtonGroup>
-                            <Button id="start-stop" onClick={this.handleStartStop}><i className="far fa-play-circle"></i><i className="far fa-pause-circle"></i></Button>
+                            <Button id="start-stop" onClick={this.handleTimer}><i className="far fa-play-circle"></i><i className="far fa-pause-circle"></i></Button>
                             <Button id="reset"><i className="fas fa-redo-alt"></i></Button>
                         </ButtonGroup>
                     </div>
@@ -52,12 +77,14 @@ class Controls extends Component {
 }
 
 Controls.propTypes = {
+    timer: PropTypes.string.isRequired,
     session: PropTypes.number.isRequired,
     break: PropTypes.number.isRequired,
     startStopTimer: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
+    timer: state.clock.timer,
     session: state.clock.session,
     break: state.clock.break
 });

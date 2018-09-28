@@ -1,8 +1,8 @@
 import { START_STOP_TIMER } from './types';
 
-export const startStopTimer = () => dispatch => {
-    console.log('dispatching...');
+export const startStopTimer = (time) => dispatch => {
     dispatch({
-        type: START_STOP_TIMER
+        type: START_STOP_TIMER,
+        payload: time
     });
 }
