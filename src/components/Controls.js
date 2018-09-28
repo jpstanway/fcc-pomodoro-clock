@@ -6,6 +6,15 @@ import { connect } from 'react-redux';
 import { startStopTimer } from '../actions/clockActions';
 
 class Controls extends Component {
+    constructor(props) {
+        super(props);
+        this.handleStartStop = this.handleStartStop.bind(this);
+    }
+
+    handleStartStop() {
+        setInterval(this.props.startStopTimer, 1000);
+    }
+
     render() {
         return(
             <Row id="controls">
@@ -22,7 +31,7 @@ class Controls extends Component {
                 <Col xs="4">
                     <div className="control-grp">
                         <ButtonGroup>
-                            <Button id="start-stop" onClick={this.props.startStopTimer}><i className="far fa-play-circle"></i><i className="far fa-pause-circle"></i></Button>
+                            <Button id="start-stop" onClick={this.handleStartStop}><i className="far fa-play-circle"></i><i className="far fa-pause-circle"></i></Button>
                             <Button id="reset"><i className="fas fa-redo-alt"></i></Button>
                         </ButtonGroup>
                     </div>
