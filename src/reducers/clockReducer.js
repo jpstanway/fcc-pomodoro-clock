@@ -1,4 +1,4 @@
-import { START_STOP_TIMER } from '../actions/types';
+import { START_STOP_TIMER, RESET } from '../actions/types';
 
 
 const initialState = {
@@ -14,6 +14,13 @@ export default function(state = initialState, action) {
                 ...state,
                 timer: action.payload
             };
+        case RESET:
+            return{
+                ...state,
+                timer: '25:00',
+                session: 25,
+                break: 5
+            };    
         default:
             return state;
     }

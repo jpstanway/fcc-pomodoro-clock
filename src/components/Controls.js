@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, ButtonGroup, Row, Col } from 'reactstrap';
 
 import { connect } from 'react-redux';
-import { startStopTimer } from '../actions/clockActions';
+import { startStopTimer, reset } from '../actions/clockActions';
 
 let countdown;
 
@@ -11,7 +11,9 @@ class Controls extends Component {
     constructor(props) {
         super(props);
         this.timer = this.timer.bind(this);
-        this.handleTimer = this.handleTimer.bind(this);
+        this.startTimer = this.startTimer.bind(this);
+        this.pauseTimer = this.pauseTimer.bind(this);
+        this.resetTimer = this.resetTimer.bind(this);
     }
 
     timer() {
@@ -30,14 +32,23 @@ class Controls extends Component {
 
         // if value hits '0' stop interval...
         if (nextTime === '00:00') {
-            clearInterval(countdown);
+            this.pauseTimer();
         }
         
         this.props.startStopTimer(nextTime);
     }
 
-    handleTimer() {
+    startTimer() {
         countdown = setInterval(this.timer, 1000);
+    }
+
+    pauseTimer() {
+        clearInterval(countdown);
+    }
+
+    resetTimer() {
+        this.pauseTimer();
+        this.props.reset();    
     }
 
     render() {
@@ -56,8 +67,8 @@ class Controls extends Component {
                 <Col xs="4">
                     <div className="control-grp">
                         <ButtonGroup>
-                            <Button id="start-stop" onClick={this.handleTimer}><i className="far fa-play-circle"></i><i className="far fa-pause-circle"></i></Button>
-                            <Button id="reset"><i className="fas fa-redo-alt"></i></Button>
+                            <Button id="start-stop" onClick={this.startTimer}><i className="far fa-play-circle"></i><i className="far fa-pause-circle"></i></Button>
+                            <Button id="reset" onClick={this.resetTimer}><i className="fas fa-redo-alt"></i></Button>
                         </ButtonGroup>
                     </div>
                 </Col>  
@@ -80,7 +91,8 @@ Controls.propTypes = {
     timer: PropTypes.string.isRequired,
     session: PropTypes.number.isRequired,
     break: PropTypes.number.isRequired,
-    startStopTimer: PropTypes.func.isRequired
+    startStopTimer: PropTypes.func.isRequired,
+    reset: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -89,4 +101,4 @@ const mapStateToProps = state => ({
     break: state.clock.break
 });
 
-export default connect(mapStateToProps, { startStopTimer })(Controls);
+export default connect(mapStateToProps, { startStopTimer, reset })(Controls);
