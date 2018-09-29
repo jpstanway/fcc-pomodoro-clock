@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, ButtonGroup, Row, Col } from 'reactstrap';
 
 import { connect } from 'react-redux';
-import { startStopTimer, reset, adjustLength } from '../actions/clockActions';
+import { setTimer, startStopTimer, reset, adjustLength } from '../actions/clockActions';
 
 let countdown;
 
@@ -17,9 +17,9 @@ class Controls extends Component {
         this.handleLength = this.handleLength.bind(this);
     }
 
-    timer() {
-        // get the current time
-        let currentTime = this.props.timer.split(':');
+    timer(startTime) {
+        // get the currently set session time
+        let currentTime = this.props.timer.split(":");
 
         // set a new Date object
         let newTime = new Date();
@@ -40,6 +40,8 @@ class Controls extends Component {
     }
 
     startTimer() {
+        this.props.setTimer();
+
         countdown = setInterval(this.timer, 1000);
     }
 
@@ -109,6 +111,7 @@ Controls.propTypes = {
     timer: PropTypes.string.isRequired,
     session: PropTypes.number.isRequired,
     break: PropTypes.number.isRequired,
+    setTimer: PropTypes.func.isRequired,
     startStopTimer: PropTypes.func.isRequired,
     reset: PropTypes.func.isRequired,
     adjustLength: PropTypes.func.isRequired
@@ -121,6 +124,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { 
+    setTimer,
     startStopTimer, 
     reset, 
     adjustLength

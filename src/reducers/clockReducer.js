@@ -1,4 +1,4 @@
-import { START_STOP_TIMER, RESET, ADJUST_LENGTH } from '../actions/types';
+import { SET_TIMER, START_STOP_TIMER, RESET, ADJUST_LENGTH } from '../actions/types';
 
 
 const initialState = {
@@ -9,6 +9,11 @@ const initialState = {
 
 export default function(state = initialState, action) {
     switch(action.type) {
+        case SET_TIMER:
+            return{
+                ...state,
+                timer: `${state.session}:00`
+            };
         case START_STOP_TIMER:
             return{
                 ...state,

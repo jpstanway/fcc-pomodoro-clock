@@ -1,4 +1,10 @@
-import { START_STOP_TIMER, RESET, ADJUST_LENGTH } from './types';
+import { SET_TIMER, START_STOP_TIMER, RESET, ADJUST_LENGTH } from './types';
+
+export const setTimer = () => dispatch => {
+    dispatch({
+        type: SET_TIMER
+    });
+};
 
 export const startStopTimer = (time) => dispatch => {
     dispatch({
