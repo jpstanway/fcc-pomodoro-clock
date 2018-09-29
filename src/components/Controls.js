@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, ButtonGroup, Row, Col } from 'reactstrap';
 
 import { connect } from 'react-redux';
-import { startStopTimer, reset } from '../actions/clockActions';
+import { startStopTimer, reset, adjustLength } from '../actions/clockActions';
 
 let countdown;
 
@@ -14,6 +14,7 @@ class Controls extends Component {
         this.startTimer = this.startTimer.bind(this);
         this.pauseTimer = this.pauseTimer.bind(this);
         this.resetTimer = this.resetTimer.bind(this);
+        this.handleLength = this.handleLength.bind(this);
     }
 
     timer() {
@@ -51,6 +52,23 @@ class Controls extends Component {
         this.props.reset();    
     }
 
+    handleLength(e) {
+        const button = e.target.value;
+        const target = e.target.className.split(" ");
+        const currentValue = target[0] === 'session' ? this.props.session : this.props.break;
+        let newValue;
+
+        if(button === '+' && currentValue < 60) {
+            newValue = currentValue + 1;
+        } else if(button === '-' && currentValue > 1) {
+            newValue = currentValue - 1;
+        } else {
+            return false;
+        }
+
+        this.props.adjustLength(target[0], newValue);
+    }
+
     render() {
         return(
             <Row id="controls">
@@ -59,16 +77,16 @@ class Controls extends Component {
                         <h3 id="session-label">Session Length</h3>
                         <p id="session-length">{this.props.session}</p>
                         <ButtonGroup>
-                            <Button id="session-decrement"><i className="far fa-minus-square"></i></Button>
-                            <Button id="session-increment"><i className="far fa-plus-square"></i></Button>
+                            <Button id="session-decrement" className="session" onClick={this.handleLength} value="-"><i className="far fa-minus-square btn-icon"></i></Button>
+                            <Button id="session-increment" className="session" onClick={this.handleLength} value="+"><i className="far fa-plus-square btn-icon"></i></Button>
                         </ButtonGroup>
                     </div>
                 </Col>  
                 <Col xs="4">
                     <div className="control-grp">
                         <ButtonGroup>
-                            <Button id="start-stop" onClick={this.startTimer}><i className="far fa-play-circle"></i><i className="far fa-pause-circle"></i></Button>
-                            <Button id="reset" onClick={this.resetTimer}><i className="fas fa-redo-alt"></i></Button>
+                            <Button id="start-stop" onClick={this.startTimer}><i className="far fa-play-circle btn-icon"></i><i className="far fa-pause-circle"></i></Button>
+                            <Button id="reset" onClick={this.resetTimer}><i className="fas fa-redo-alt btn-icon"></i></Button>
                         </ButtonGroup>
                     </div>
                 </Col>  
@@ -77,8 +95,8 @@ class Controls extends Component {
                         <h3 id="break-label">Break Length</h3>
                         <p id="break-length">{this.props.break}</p>
                         <ButtonGroup>
-                            <Button id="break-decrement"><i className="far fa-minus-square"></i></Button>
-                            <Button id="break-increment"><i className="far fa-plus-square"></i></Button>
+                            <Button id="break-decrement" className="break" onClick={this.handleLength} value="-"><i className="far fa-minus-square btn-icon"></i></Button>
+                            <Button id="break-increment" className="break" onClick={this.handleLength} value="+"><i className="far fa-plus-square btn-icon"></i></Button>
                         </ButtonGroup>
                     </div>
                 </Col>      
@@ -92,7 +110,8 @@ Controls.propTypes = {
     session: PropTypes.number.isRequired,
     break: PropTypes.number.isRequired,
     startStopTimer: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired
+    reset: PropTypes.func.isRequired,
+    adjustLength: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -101,4 +120,8 @@ const mapStateToProps = state => ({
     break: state.clock.break
 });
 
-export default connect(mapStateToProps, { startStopTimer, reset })(Controls);
+export default connect(mapStateToProps, { 
+    startStopTimer, 
+    reset, 
+    adjustLength
+})(Controls);
