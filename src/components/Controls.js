@@ -10,6 +10,10 @@ let countdown;
 class Controls extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isRunning: false,
+            inProgress: false
+        }
         this.timer = this.timer.bind(this);
         this.startTimer = this.startTimer.bind(this);
         this.pauseTimer = this.pauseTimer.bind(this);
@@ -40,9 +44,27 @@ class Controls extends Component {
     }
 
     startTimer() {
-        this.props.setTimer();
+        const running = this.state.isRunning;
+        const progress = this.state.inProgress;
 
-        countdown = setInterval(this.timer, 1000);
+        if(!running) {
+            if(!progress) {
+                // if starting timer from scratch, fire setTimer action so timer matches session length
+                this.props.setTimer();
+            }
+            // set local is running and in progress state to true
+            this.setState({ 
+                isRunning: true,
+                inProgress: true 
+            });
+            // start countdown function
+            countdown = setInterval(this.timer, 1000);
+        } else {
+            // if timer is running, set it to false
+            this.setState({ isRunning: false });
+            // and pause the timer...
+            this.pauseTimer();
+        }
     }
 
     pauseTimer() {
@@ -50,7 +72,14 @@ class Controls extends Component {
     }
 
     resetTimer() {
+        // reset local state values
+        this.setState({
+            isRunning: false,
+            inProgress: false
+        });
+        // stop current countdown...
         this.pauseTimer();
+        // and reset default values
         this.props.reset();    
     }
 
