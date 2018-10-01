@@ -5,7 +5,7 @@ import { Button, ButtonGroup, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import { setTimer, startStopTimer, reset, adjustLength } from '../actions/clockActions';
 
-let countdown;
+let countdown, currentTime, newTime, nextTime;
 
 class Controls extends Component {
     constructor(props) {
@@ -23,16 +23,16 @@ class Controls extends Component {
         this.handleLength = this.handleLength.bind(this);
     }
 
-    timer(startTime) {
+    timer() {
         // get the currently set session time
-        let currentTime = this.props.timer.split(":");
-
+        currentTime = this.props.timer.split(":");
+        
         // set a new Date object
-        let newTime = new Date();
+        newTime = new Date();
         newTime.setMinutes(currentTime[0], currentTime[1]);
 
         // create another Date object with subtracted value
-        let nextTime = new Date(newTime.valueOf() - 1000);
+        nextTime = new Date(newTime.valueOf() - 1000);
         nextTime = nextTime.toTimeString().split(' ');
         nextTime = nextTime[0].split(':');
         nextTime = `${nextTime[1]}:${nextTime[2]}`;
@@ -42,6 +42,9 @@ class Controls extends Component {
 
         // if value hits '0' stop interval...
         if (nextTime === '00:00') {
+            // get audio element and play it
+            const audio = document.getElementById('beep');
+            audio.play();
             // is it currently a break?
             const breakTime = !this.state.isBreak ? true : false;
             // reset local state
@@ -141,6 +144,7 @@ class Controls extends Component {
                             <Button id="start-stop" onClick={this.handleTimer}><i className="far fa-play-circle btn-icon"></i><i className="far fa-pause-circle"></i></Button>
                             <Button id="reset" onClick={this.resetTimer}><i className="fas fa-redo-alt btn-icon"></i></Button>
                         </ButtonGroup>
+                        <audio id="beep" src="https://res.cloudinary.com/mtninja/video/upload/v1538415257/Electronic_Chime-KevanGC-495939803_hhiu2y.wav"></audio>
                     </div>
                 </Col>  
                 <Col xs="4">
