@@ -12,9 +12,11 @@ class Controls extends Component {
         super(props);
         this.state = {
             isRunning: false,
-            inProgress: false
+            inProgress: false,
+            isBreak: false
         }
         this.timer = this.timer.bind(this);
+        this.handleTimer = this.handleTimer.bind(this);
         this.startTimer = this.startTimer.bind(this);
         this.pauseTimer = this.pauseTimer.bind(this);
         this.resetTimer = this.resetTimer.bind(this);
@@ -35,39 +37,58 @@ class Controls extends Component {
         nextTime = nextTime[0].split(':');
         nextTime = `${nextTime[1]}:${nextTime[2]}`;
 
+        // set next value to timer element
+        this.props.startStopTimer(nextTime);
+
         // if value hits '0' stop interval...
         if (nextTime === '00:00') {
+            // is it currently a break?
+            const breakTime = !this.state.isBreak ? true : false;
+            // reset local state
+            this.setState({
+                inProgress: false,
+                isBreak: breakTime
+            });
+            // start timer again
             this.pauseTimer();
+            this.handleTimer();
         }
-        
-        this.props.startStopTimer(nextTime);
+    }
+
+    handleTimer() {
+        const { isRunning, inProgress, isBreak } = this.state;
+
+        // is a countdown in progress?
+        if(inProgress) {
+            // YES...is the timer currently running?
+            if(isRunning) {
+                // YES... pause it
+                this.pauseTimer();
+            } else {
+                // NO... resume timer
+                this.startTimer();
+            }
+        } else {
+            // NO...ok, let's start a fresh countdown... is it break time?
+            this.setState({ inProgress: true });
+            if(isBreak) {
+                // YES... start timer from break
+                this.props.setTimer('break');
+            } else {
+                // NO... start timer from session
+                this.props.setTimer('session');
+            }
+            this.startTimer();
+        }
     }
 
     startTimer() {
-        const running = this.state.isRunning;
-        const progress = this.state.inProgress;
-
-        if(!running) {
-            if(!progress) {
-                // if starting timer from scratch, fire setTimer action so timer matches session length
-                this.props.setTimer();
-            }
-            // set local is running and in progress state to true
-            this.setState({ 
-                isRunning: true,
-                inProgress: true 
-            });
-            // start countdown function
-            countdown = setInterval(this.timer, 1000);
-        } else {
-            // if timer is running, set it to false
-            this.setState({ isRunning: false });
-            // and pause the timer...
-            this.pauseTimer();
-        }
+        this.setState({ isRunning: true });
+        countdown = setInterval(this.timer, 1000);
     }
 
     pauseTimer() {
+        this.setState({ isRunning: false });
         clearInterval(countdown);
     }
 
@@ -75,7 +96,8 @@ class Controls extends Component {
         // reset local state values
         this.setState({
             isRunning: false,
-            inProgress: false
+            inProgress: false,
+            isBreak: false
         });
         // stop current countdown...
         this.pauseTimer();
@@ -116,7 +138,7 @@ class Controls extends Component {
                 <Col xs="4">
                     <div className="control-grp">
                         <ButtonGroup>
-                            <Button id="start-stop" onClick={this.startTimer}><i className="far fa-play-circle btn-icon"></i><i className="far fa-pause-circle"></i></Button>
+                            <Button id="start-stop" onClick={this.handleTimer}><i className="far fa-play-circle btn-icon"></i><i className="far fa-pause-circle"></i></Button>
                             <Button id="reset" onClick={this.resetTimer}><i className="fas fa-redo-alt btn-icon"></i></Button>
                         </ButtonGroup>
                     </div>

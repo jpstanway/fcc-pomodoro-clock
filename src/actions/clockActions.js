@@ -1,8 +1,9 @@
 import { SET_TIMER, START_STOP_TIMER, RESET, ADJUST_LENGTH } from './types';
 
-export const setTimer = () => dispatch => {
+export const setTimer = (stage) => dispatch => {
     dispatch({
-        type: SET_TIMER
+        type: SET_TIMER,
+        payload: stage
     });
 };
 

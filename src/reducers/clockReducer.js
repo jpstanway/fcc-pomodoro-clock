@@ -2,6 +2,7 @@ import { SET_TIMER, START_STOP_TIMER, RESET, ADJUST_LENGTH } from '../actions/ty
 
 
 const initialState = {
+    label: 'session',
     timer: '25:00',
     session: 25,
     break: 5
@@ -12,7 +13,8 @@ export default function(state = initialState, action) {
         case SET_TIMER:
             return{
                 ...state,
-                timer: `${state.session}:00`
+                label: action.payload,
+                timer: `${state[action.payload]}:00`
             };
         case START_STOP_TIMER:
             return{
