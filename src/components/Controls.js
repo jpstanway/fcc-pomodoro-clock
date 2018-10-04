@@ -5,7 +5,7 @@ import { Button, ButtonGroup, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import { setTimer, startStopTimer, reset, adjustLength } from '../actions/clockActions';
 
-let countdown, currentTime, newTime, nextTime;
+let countdown, currentTime, newTime, nextTime, audio;
 
 class Controls extends Component {
     constructor(props) {
@@ -21,6 +21,10 @@ class Controls extends Component {
         this.pauseTimer = this.pauseTimer.bind(this);
         this.resetTimer = this.resetTimer.bind(this);
         this.handleLength = this.handleLength.bind(this);
+    }
+
+    componentDidMount() {
+        audio = document.getElementById('beep');
     }
 
     timer() {
@@ -42,8 +46,7 @@ class Controls extends Component {
 
         // if value hits '0' stop interval...
         if (nextTime === '00:00') {
-            // get audio element and play it
-            const audio = document.getElementById('beep');
+            // play audio element
             audio.play();
             // is it currently a break?
             const breakTime = !this.state.isBreak ? true : false;
@@ -96,14 +99,15 @@ class Controls extends Component {
     }
 
     resetTimer() {
+        // stop current countdown...
+        this.pauseTimer();
+        // stop audio element
+        audio.currentTime = 0;
         // reset local state values
         this.setState({
-            isRunning: false,
             inProgress: false,
             isBreak: false
         });
-        // stop current countdown...
-        this.pauseTimer();
         // and reset default values
         this.props.reset();    
     }
@@ -130,8 +134,8 @@ class Controls extends Component {
             <Row id="controls">
                 <Col xs="4">
                     <div className="control-grp">
-                        <h3 id="session-label">Session Length</h3>
-                        <p id="session-length">{this.props.session}</p>
+                        <h3 id="session-label" className="text-element">Session Length</h3>
+                        <p id="session-length" className="number-element">{this.props.session}</p>
                         <ButtonGroup>
                             <Button id="session-decrement" className="session" onClick={this.handleLength} value="-"><i className="far fa-minus-square btn-icon"></i></Button>
                             <Button id="session-increment" className="session" onClick={this.handleLength} value="+"><i className="far fa-plus-square btn-icon"></i></Button>
@@ -140,8 +144,8 @@ class Controls extends Component {
                 </Col>  
                 <Col xs="4">
                     <div className="control-grp">
-                        <ButtonGroup>
-                            <Button id="start-stop" onClick={this.handleTimer}><i className="far fa-play-circle btn-icon"></i><i className="far fa-pause-circle"></i></Button>
+                        <ButtonGroup id="main-controls">
+                            <Button id="start_stop" onClick={this.handleTimer}><i className="far fa-play-circle btn-icon"></i><i className="far fa-pause-circle"></i></Button>
                             <Button id="reset" onClick={this.resetTimer}><i className="fas fa-redo-alt btn-icon"></i></Button>
                         </ButtonGroup>
                         <audio id="beep" src="https://res.cloudinary.com/mtninja/video/upload/v1538415257/Electronic_Chime-KevanGC-495939803_hhiu2y.wav"></audio>
@@ -149,14 +153,14 @@ class Controls extends Component {
                 </Col>  
                 <Col xs="4">
                     <div className="control-grp">
-                        <h3 id="break-label">Break Length</h3>
-                        <p id="break-length">{this.props.break}</p>
+                        <h3 id="break-label" className="text-element">Break Length</h3>
+                        <p id="break-length" className="number-element">{this.props.break}</p>
                         <ButtonGroup>
                             <Button id="break-decrement" className="break" onClick={this.handleLength} value="-"><i className="far fa-minus-square btn-icon"></i></Button>
                             <Button id="break-increment" className="break" onClick={this.handleLength} value="+"><i className="far fa-plus-square btn-icon"></i></Button>
                         </ButtonGroup>
                     </div>
-                </Col>      
+                </Col>     
             </Row>
         );
     }

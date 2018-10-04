@@ -7,8 +7,8 @@ class Clock extends Component {
     render() {
         return(
             <div id="timer">
-                <h1 id="timer-label">{this.props.label}</h1>
-                <h3 id="time-left">{this.props.timer}</h3>
+                <h1 id="timer-label" className="text-element">{this.props.label}</h1>
+                <h2 id="time-left" className="number-element">{this.props.timer}</h2>
             </div>
         );
     }

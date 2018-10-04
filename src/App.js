@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Clock from './components/Clock';
 import Controls from './components/Controls';
+import { Container } from 'reactstrap';
 
 import { Provider } from 'react-redux';
 import store from './store';
@@ -13,8 +14,10 @@ class App extends Component {
     return (
       <Provider store={store}>
         <div className="App">
-          <Clock />
-          <Controls />
+          <Container id="container">
+            <Clock />
+            <Controls />
+          </Container>
         </div>
       </Provider>
     );

@@ -1,25 +1,72 @@
 @import url('https://use.fontawesome.com/releases/v5.3.1/css/all.css');
+@import url('https://fonts.googleapis.com/css?family=Inconsolata|Quintessential');
 @import 'partials/variables';
 @import 'partials/mixins';
 
+#container {
+  position: relative;
+  top: 20%;
+  padding: 50px;
+}
+
 #timer {
-  height: 150px;
+  padding-top: 20px;
+
+  #time-left {
+    font-size: 3em;
+  }
+}
+
+#controls {
+  padding: 0 35px;
+  margin: 20px 0;
+
+  #main-controls {
+    position: relative;
+    top: 81%;
+    right: 13%;
+  }
+}
+
+// Progress bar styles
+#progress-bar {
+  height: 20px;
+  width: 350px;
+  margin: auto;
+  border-radius: 50px;
+  border: 1px solid #333;
+}
+
+#filler {
+  background: #1DA598;
+  height: 100%;
+  border-radius: inherit;
+  transition: width .2s ease-in;
 }
 
 .App {
-  width: 500px;
-  margin: auto;
+  width: 600px;
+  height: 722px;
+  margin: 25% auto;
   padding: 20px;
   text-align: center;
-  background-color: green;
+  background: url('https://res.cloudinary.com/mtninja/image/upload/c_scale,w_600/v1538597530/chronograph-modified_rcmt6k.png');
 }
 
 .control-grp {
   height: 175px;
   padding: 10px;
-  background: #efefef;
 }
 
 .btn-icon {
   pointer-events: none;
+}
+
+.text-element {
+  font-family: $text-font;
+}
+
+.number-element {
+  font-family: $number-font;
+  font-size: 1.5em;
 }
