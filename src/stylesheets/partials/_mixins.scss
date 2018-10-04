@@ -1,0 +1,13 @@
+@mixin btn-color($color) {
+    color: black;
+    border-color: darken($color, 25%);
+    background-color: $color;
+
+    &:hover {
+      background-color: lighten($color, 25%);
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+}

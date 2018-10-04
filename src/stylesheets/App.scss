@@ -26,6 +26,18 @@
     top: 81%;
     right: 13%;
   }
+
+  #session-decrement, #session-increment {
+    @include btn-color($sub-controls-1);
+  }
+
+  #start_stop, #reset {
+    @include btn-color($main-controls);
+  }
+
+  #break-decrement, #break-increment {
+    @include btn-color($sub-controls-2);
+  }
 }
 
 // Progress bar styles

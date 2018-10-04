@@ -17,6 +17,30 @@
     position: relative;
     top: 81%;
     right: 13%; }
+  #controls #session-decrement, #controls #session-increment {
+    color: black;
+    border-color: #e57c7c;
+    background-color: #fae6e6; }
+    #controls #session-decrement:hover, #controls #session-increment:hover {
+      background-color: white; }
+    #controls #session-decrement:focus, #controls #session-increment:focus {
+      box-shadow: none; }
+  #controls #start_stop, #controls #reset {
+    color: black;
+    border-color: #7c7ce5;
+    background-color: #e6e6fa; }
+    #controls #start_stop:hover, #controls #reset:hover {
+      background-color: white; }
+    #controls #start_stop:focus, #controls #reset:focus {
+      box-shadow: none; }
+  #controls #break-decrement, #controls #break-increment {
+    color: black;
+    border-color: #7ce57c;
+    background-color: #e6fae6; }
+    #controls #break-decrement:hover, #controls #break-increment:hover {
+      background-color: white; }
+    #controls #break-decrement:focus, #controls #break-increment:focus {
+      box-shadow: none; }
 
 #progress-bar {
   height: 20px;
