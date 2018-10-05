@@ -14,7 +14,7 @@ export default function(state = initialState, action) {
             return{
                 ...state,
                 label: action.payload,
-                timer: `${state[action.payload]}:00`
+                timer: state[action.payload] < 10 ? `0${state[action.payload]}:00` : `${state[action.payload]}:00`
             };
         case START_STOP_TIMER:
             return{
@@ -24,6 +24,7 @@ export default function(state = initialState, action) {
         case RESET:
             return{
                 ...state,
+                label: 'session',
                 timer: '25:00',
                 session: 25,
                 break: 5

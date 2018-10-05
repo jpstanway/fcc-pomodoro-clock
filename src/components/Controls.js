@@ -46,8 +46,12 @@ class Controls extends Component {
 
         // if value hits '0' stop interval...
         if (nextTime === '00:00') {
+            //stop current audio from playing
+            audio.pause();
+            audio.currentTime = 0;
             // play audio element
             audio.play();
+        } else if (nextTime === '59:59') {
             // is it currently a break?
             const breakTime = !this.state.isBreak ? true : false;
             // reset local state
@@ -94,14 +98,15 @@ class Controls extends Component {
     }
 
     pauseTimer() {
-        this.setState({ isRunning: false });
         clearInterval(countdown);
+        this.setState({ isRunning: false });
     }
 
     resetTimer() {
         // stop current countdown...
         this.pauseTimer();
         // stop audio element
+        audio.pause();
         audio.currentTime = 0;
         // reset local state values
         this.setState({
