@@ -11,6 +11,10 @@ body {
   position: relative;
   top: 20%;
   padding: 50px;
+
+  @media screen and (max-width: 599px) {
+    padding: 70px 0px;
+  }
 }
 
 #timer {
@@ -18,6 +22,15 @@ body {
 
   #time-left {
     font-size: 3em;
+  }
+
+  @media screen and (max-width: 599px) {
+    padding-top: 50px;
+    
+    #timer-label, #time-left {
+      font-size: 1.5em;
+      margin: 0;
+    }
   }
 }
 
@@ -29,6 +42,11 @@ body {
     position: relative;
     top: 81%;
     right: 13%;
+
+    @media screen and (max-width: 599px) {
+      top: 36%;
+      right: 0;
+    }
   }
 
   #session-decrement, #session-increment {
@@ -42,15 +60,41 @@ body {
   #break-decrement, #break-increment {
     @include btn-color($sub-controls-2);
   }
+
+  @media screen and (max-width: 599px) {
+    padding: 0;
+    margin: 0;
+
+    #session-label, #break-label {
+      font-size: 1em;
+    }
+
+    #session-label {
+      padding-left: 20px;
+    }
+
+    #break-label {
+      padding-right: 20px;
+    }
+
+    .col-4 {
+      padding: 0;
+    }
+  }
 }
 
 // Progress bar styles
 #progress-bar {
   height: 20px;
-  width: 350px;
+  max-width: 350px;
   margin: auto;
   border-radius: 50px;
   border: 1px solid #333;
+
+  @media screen and (max-width: 599px) {
+    width: 80%;
+    margin-top: 10px;
+  }
 }
 
 #filler {
@@ -61,17 +105,34 @@ body {
 }
 
 .App {
-  width: 600px;
+  max-width: 600px;
+  width: 100%;
   height: 722px;
   margin: 25% auto;
   padding: 20px;
   text-align: center;
   background: url('https://res.cloudinary.com/mtninja/image/upload/c_scale,w_600/v1538767977/chronograph-modified_pkl4b0.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  @media screen and (max-width: 599px) {
+    margin: 0 auto;
+  }
 }
 
 .control-grp {
   height: 175px;
   padding: 10px;
+
+  @media screen and (max-width: 599px) {
+    height: auto;
+    padding: 0;
+
+    #session-length, #break-length {
+      margin: 0;
+    }
+  }
 }
 
 .btn-icon {
