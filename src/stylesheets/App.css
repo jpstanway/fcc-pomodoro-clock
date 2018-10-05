@@ -1,5 +1,8 @@
 @import url("https://use.fontawesome.com/releases/v5.3.1/css/all.css");
 @import url("https://fonts.googleapis.com/css?family=Inconsolata|Quintessential");
+body {
+  background-color: #FAFAE6; }
+
 #container {
   position: relative;
   top: 20%;
@@ -61,7 +64,7 @@
   margin: 25% auto;
   padding: 20px;
   text-align: center;
-  background: url("https://res.cloudinary.com/mtninja/image/upload/c_scale,w_600/v1538597530/chronograph-modified_rcmt6k.png"); }
+  background: url("https://res.cloudinary.com/mtninja/image/upload/c_scale,w_600/v1538767977/chronograph-modified_pkl4b0.png"); }
 
 .control-grp {
   height: 175px;

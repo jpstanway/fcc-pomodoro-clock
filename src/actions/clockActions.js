@@ -1,4 +1,4 @@
-import { SET_TIMER, START_STOP_TIMER, RESET, ADJUST_LENGTH } from './types';
+import { SET_TIMER, START_STOP_TIMER, RESET, ADJUST_LENGTH, SET_PROGRESS_BAR } from './types';
 
 export const setTimer = (stage) => dispatch => {
     dispatch({
@@ -27,3 +27,9 @@ export const adjustLength = (target, val) => dispatch => {
         val: val
     });
 };
+
+export const setProgressBar = () => dispatch => {
+    dispatch({
+        type: SET_PROGRESS_BAR
+    });
+}

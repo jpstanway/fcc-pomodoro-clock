@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+let barValue, currentTime, seconds, percentage;
+
 const Filler = (props) => {
     return <div id="filler" style={{ width: `${props.percentage}%` }} />
 };
@@ -9,15 +11,21 @@ class ProgressBar extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            percentage: 0
-        }
+        this.convertTime = this.convertTime.bind(this);
     }
 
     convertTime() {
-        let length = this.props.session * 60;
-        let time = Number(this.props.timer.replace(':', '.')) * 60;
-        console.log((length - time) / length);
+        // get initial bar value and convert to seconds
+        barValue = this.props.barValue.split(':');
+        barValue = barValue[0] * 60;
+        // get current timer value and convert to seconds
+        currentTime = this.props.timer.split(":");
+        seconds = (currentTime[0] * 60) + Number(currentTime[1]);
+        // divide current time with initial time and multiply 
+        // by 100 for accurate percentage
+        percentage = (seconds / barValue) * 100;
+        // set percentage value to 2 decimal places and return value
+        return percentage.toFixed(2);
     }
 
     render() {
@@ -31,8 +39,7 @@ class ProgressBar extends Component {
 
 const mapStateToProps = state => ({
     timer: state.clock.timer,
-    session: state.clock.session,
-    break: state.clock.break
+    barValue: state.clock.barValue
 });
 
 export default connect(mapStateToProps, {})(ProgressBar);

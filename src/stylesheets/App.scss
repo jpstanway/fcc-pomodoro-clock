@@ -3,6 +3,10 @@
 @import 'partials/variables';
 @import 'partials/mixins';
 
+body {
+  background-color: $body-color;
+}
+
 #container {
   position: relative;
   top: 20%;
@@ -62,7 +66,7 @@
   margin: 25% auto;
   padding: 20px;
   text-align: center;
-  background: url('https://res.cloudinary.com/mtninja/image/upload/c_scale,w_600/v1538597530/chronograph-modified_rcmt6k.png');
+  background: url('https://res.cloudinary.com/mtninja/image/upload/c_scale,w_600/v1538767977/chronograph-modified_pkl4b0.png');
 }
 
 .control-grp {

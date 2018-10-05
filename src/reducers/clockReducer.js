@@ -1,11 +1,12 @@
-import { SET_TIMER, START_STOP_TIMER, RESET, ADJUST_LENGTH } from '../actions/types';
+import { SET_TIMER, START_STOP_TIMER, RESET, ADJUST_LENGTH, SET_PROGRESS_BAR } from '../actions/types';
 
 
 const initialState = {
     label: 'session',
     timer: '25:00',
     session: 25,
-    break: 5
+    break: 5,
+    barValue: '25:00'
 };
 
 export default function(state = initialState, action) {
@@ -22,17 +23,16 @@ export default function(state = initialState, action) {
                 timer: action.payload
             };
         case RESET:
-            return{
-                ...state,
-                label: 'session',
-                timer: '25:00',
-                session: 25,
-                break: 5
-            };    
+            return initialState;
         case ADJUST_LENGTH:
             return{
                 ...state,
             [action.target]: action.val
+            };    
+        case SET_PROGRESS_BAR:
+            return{
+                ...state,
+                barValue: state.timer
             };    
         default:
             return state;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Clock from './components/Clock';
 import Controls from './components/Controls';
+import ProgressBar from './components/ProgressBar';
 import { Container } from 'reactstrap';
 
 import { Provider } from 'react-redux';
@@ -17,6 +18,7 @@ class App extends Component {
           <Container id="container">
             <Clock />
             <Controls />
+            <ProgressBar />
           </Container>
         </div>
       </Provider>

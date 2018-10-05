@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, ButtonGroup, Row, Col } from 'reactstrap';
 
 import { connect } from 'react-redux';
-import { setTimer, startStopTimer, reset, adjustLength } from '../actions/clockActions';
+import { setTimer, startStopTimer, reset, adjustLength, setProgressBar } from '../actions/clockActions';
 
 let countdown, currentTime, newTime, nextTime, audio;
 
@@ -21,9 +21,11 @@ class Controls extends Component {
         this.pauseTimer = this.pauseTimer.bind(this);
         this.resetTimer = this.resetTimer.bind(this);
         this.handleLength = this.handleLength.bind(this);
+        this.stopAudio = this.stopAudio.bind(this);
     }
 
     componentDidMount() {
+        // set audio element
         audio = document.getElementById('beep');
     }
 
@@ -47,8 +49,7 @@ class Controls extends Component {
         // if value hits '0' stop interval...
         if (nextTime === '00:00') {
             //stop current audio from playing
-            audio.pause();
-            audio.currentTime = 0;
+            this.stopAudio();
             // play audio element
             audio.play();
         } else if (nextTime === '59:59') {
@@ -88,6 +89,9 @@ class Controls extends Component {
                 // NO... start timer from session
                 this.props.setTimer('session');
             }
+            // set the progress bar value
+            this.props.setProgressBar();
+            // begin timer function
             this.startTimer();
         }
     }
@@ -106,8 +110,7 @@ class Controls extends Component {
         // stop current countdown...
         this.pauseTimer();
         // stop audio element
-        audio.pause();
-        audio.currentTime = 0;
+        this.stopAudio();
         // reset local state values
         this.setState({
             inProgress: false,
@@ -118,11 +121,12 @@ class Controls extends Component {
     }
 
     handleLength(e) {
+        // get button value; either '+' or '-'
         const button = e.target.value;
         const target = e.target.className.split(" ");
         const currentValue = target[0] === 'session' ? this.props.session : this.props.break;
         let newValue;
-
+        // set value limits and adjust newvalue
         if(button === '+' && currentValue < 60) {
             newValue = currentValue + 1;
         } else if(button === '-' && currentValue > 1) {
@@ -130,8 +134,12 @@ class Controls extends Component {
         } else {
             return false;
         }
-
         this.props.adjustLength(target[0], newValue);
+    }
+
+    stopAudio() {
+        audio.pause();
+        audio.currentTime = 0;
     }
 
     render() {
@@ -178,7 +186,8 @@ Controls.propTypes = {
     setTimer: PropTypes.func.isRequired,
     startStopTimer: PropTypes.func.isRequired,
     reset: PropTypes.func.isRequired,
-    adjustLength: PropTypes.func.isRequired
+    adjustLength: PropTypes.func.isRequired,
+    setProgressBar: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -191,5 +200,6 @@ export default connect(mapStateToProps, {
     setTimer,
     startStopTimer, 
     reset, 
-    adjustLength
+    adjustLength,
+    setProgressBar
 })(Controls);
